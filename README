@@ -1,0 +1,101 @@
+****** HOW TO USE ******
+
+Within an Xcode project that uses this class, make sure that you have included 
+CoreMedia.framework and AudioToolbox.framework.
+
+
+Simply initialize this interface in an Objective-C++ class, and set a delegate
+that implements one or more of the Objective-C methods defined by the protocol
+"NLRemoteIOAudioPlayerDelegate" before calling any functions within.
+
+NLRemoteIOAudioPlayer* audioPlayer = new NLRemoteIOAudioPlayer();
+audioPlayer->_delegate = anInputController;
+
+
+As with all Objective-C delegates, you need only add a simple definition to 
+your Objective-C class's defined interface, for example;
+
+@interface MyViewController : UIViewController <NLRemoteIOAudioPlayerDelegate> 
+
+
+Feel free to define the following methods in your class delegate to implement 
+the following functionality;
+
+- (void) updateViewForRemoteIOAudioPlayerState;
+- (void) updateViewForRemoteIOAudioPlayerDuration;
+- (void) rioPlaybackDidEnd;
+- (void) updateViewForRemoteIOAudioPlayerAlbumInfo;
+
+All of these methods suggest an update to your UI, and the methods themselves 
+will be called asynchronously on your app's main Grand Central Dispatch queue. 
+
+
+To play audio, you need only provide a reference to an audio file that you 
+want to play back, like so;
+
+NSURL *pathToFile = [ NSURL URLWithString: [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"music.mp4"]];
+
+audioPlayer->startRioUnitWithInputURL( (CFURLRef) pathToFile );
+
+Then it will automatically start streaming the audio, with a very tiny memory 
+footprint.
+
+
+While it's playing, you can control playback with the following functions;
+
+audioPlayer->stopRioUnit();        // to pause audio
+audioPlayer->startRioUnit();       // to resume playback after pausing
+
+
+You can also seek to a different playback position in the file, given an input 
+of type "float" where "0.0" indicates the very beginning of the file, and the 
+value provided by NLRemoteIOAudioPlayer's "getFileDurationInSeconds()" method 
+indicates the end of the file.
+
+audioPlayer->seekToPosition(0.0);
+
+
+There is also a function that returns a boolean value to indicate the state 
+of playback, which can be queried as follows;
+
+audioPlayer->isPlaying();
+
+
+More information on the last frame buffered by the file and the sample rate of 
+the Audio Unit can be provided by the getFramesBuffered() method, within its 
+"value" property, contained within a CMTime structure. You can also find out 
+how many frames there are in the entire file with getFileDuration()'s "value"
+property, which is also contained in a CMTime structure.
+
+For these CMTime structures, the "timescale" property from getFramesBuffered() 
+is equivalent to the Audio Unit's sample rate, while getFileDuration() contains 
+the file's sample rate. To convert these frame measurements to equivalent, user-
+friendly seconds, simply divide the value by its corresponding timescale.
+
+
+This source code is offered under the MIT license, but portions are derived from
+Apple Inc.'s MixerHost sample code. Apple Inc.'s original license is attached
+within the source code wherever it is applicable.
+
+
+The MIT License
+
+Copyright (c) 2010 Thames Galley Software
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
