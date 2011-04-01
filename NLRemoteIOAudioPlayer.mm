@@ -232,8 +232,8 @@ NLRemoteIOAudioPlayer::NLRemoteIOAudioPlayer() {
 	framesBuffered.timescale = unitSampleRate;
 	framesBuffered.flags |= kCMTimeFlags_Valid;
     
-    ringBufferQueue = dispatch_queue_create("com.RemoteIOAudioPlayer.RingBufferBlockQueue", NULL);
-    scrollQueue = dispatch_queue_create("com.RemoteIOAudioPlayer.ScrollBlockQueue", NULL);	
+    ringBufferQueue = dispatch_queue_create("com.NLRemoteIOAudioPlayer.RingBufferBlockQueue", NULL);
+    scrollQueue = dispatch_queue_create("com.NLRemoteIOAudioPlayer.ScrollBlockQueue", NULL);	
 }
 
 #pragma mark -
