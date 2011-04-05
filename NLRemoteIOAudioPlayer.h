@@ -115,7 +115,7 @@ private:
     
     // setup functions to initialize an Audio Unit
     void                            setupAudioSession();
-    void                            setupStreamFormatWithChannels(short unsigned int numChannels);
+    void                            setupStreamFormatWithChannels(const short unsigned int &numChannels);
     
     // functions needed to read from a configured EAFS reference 
     void                            setCurrentBuffers(signed char requestedBuffer);
@@ -123,7 +123,7 @@ private:
     void                            readLastSegmentOfFramesFromFile();
     
     // loads the file that this AU needs to read linear PCM data from
-    void                            readAudioFileIntoMemoryWithURL(CFURLRef sourceURL);
+    void                            readAudioFileIntoMemoryWithURL(const CFURLRef &sourceURL);
     
     // init this Audio Unit
     void                            configureAndInitializeRioAudioPlayer();
@@ -132,19 +132,19 @@ private:
     void                            allocRioAudioPlayerBuffers();
     
     // helpful debug methods
-    void                            printASBD(AudioStreamBasicDescription asbd);
-    void                            printErrorMessageWithStatus(const char* errorString, OSStatus result);
+    void                            printASBD(const AudioStreamBasicDescription &asbd);
+    void                            printErrorMessageWithStatus(const char* errorString, const OSStatus &result);
     
     // ring buffer methods
-    void                            allocRingBufferAtPosition(SInt64 seekPosition);
+    void                            allocRingBufferAtPosition(const SInt64 &seekPosition);
     void                            initRingBuffer();
     void                            cycleRingBuffer();
     void                            playRingBufferAudio();
     
     // playback position tracking methods
-    SInt64                          convertSecondsToRemoteIOSamples(float seconds);
-    void                            setFramesBufferedAtSamplePosition(SInt64 position);
-    void                            incrementFramesElapsed(UInt32 numSamples);
+    SInt64                          convertSecondsToRemoteIOSamples(const float &seconds);
+    void                            setFramesBufferedAtSamplePosition(const SInt64 &position);
+    void                            incrementFramesElapsed(const UInt32 &numSamples);
     
 protected:
 	    
@@ -161,20 +161,20 @@ public:
     
     id <NLRemoteIOAudioPlayerDelegate>	_delegate;					
     
-    inline BOOL                     isPlaying()                                         { return playing; }
-    inline BOOL                     isInterruptedDuringPlayback()                       { return interruptedDuringPlayback; }
-    inline void                     setInterruptedDuringPlayback(BOOL interrupted)      { interruptedDuringPlayback = interrupted; }
-    inline CMTime                   getFramesBuffered()		                            { return framesBuffered; }
-    inline CMTime                   getFileDuration()                                   { return fileDuration; }
+    inline BOOL                     isPlaying()                                             { return playing; }
+    inline BOOL                     isInterruptedDuringPlayback()                           { return interruptedDuringPlayback; }
+    inline void                     setInterruptedDuringPlayback(const BOOL &interrupted)   { interruptedDuringPlayback = interrupted; }
+    inline CMTime                   getFramesBuffered()                                     { return framesBuffered; }
+    inline CMTime                   getFileDuration()                                       { return fileDuration; }
 	inline float 					getFileDurationInSeconds();
-    inline const soundStructPtr		getSoundStructUnitPtr()                             { return &soundStructUnit; }
+    inline const soundStructPtr		getSoundStructUnitPtr()                                 { return &soundStructUnit; }
     
     // starts and stops audio playback (analogous to the functions provided by play/pause buttons)
     void                            startRioAudioPlayer();
-    void                            startRioAudioPlayerWithInputURL(CFURLRef path);	// used as an initializer
+    void                            startRioAudioPlayerWithInputURL(const CFURLRef &path);	// used as an initializer
     void                            stopRioAudioPlayer();
     
     // seek methods
-    void                            seekToPosition(float seekTime);
+    void                            seekToPosition(const float &seekTime);
     
 };

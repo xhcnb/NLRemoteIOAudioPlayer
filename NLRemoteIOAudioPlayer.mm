@@ -292,7 +292,7 @@ void NLRemoteIOAudioPlayer::setupAudioSession() {
 }
 
 
-void NLRemoteIOAudioPlayer::setupStreamFormatWithChannels(short unsigned int numChannels) {
+void NLRemoteIOAudioPlayer::setupStreamFormatWithChannels(const short unsigned int &numChannels) {
     
     // Specify the stream format for output side of the I/O unit's 
 	//	input bus (bus 1). For a description of these fields, see 
@@ -385,7 +385,7 @@ void NLRemoteIOAudioPlayer::readLastSegmentOfFramesFromFile() {
 }
 
 // this will be for the first pass...
-void NLRemoteIOAudioPlayer::readAudioFileIntoMemoryWithURL(CFURLRef sourceURL) {
+void NLRemoteIOAudioPlayer::readAudioFileIntoMemoryWithURL(const CFURLRef &sourceURL) {
     
 	//printf("readAudioFilesIntoMemory - file %i \n", 0);
 	
@@ -640,7 +640,7 @@ void NLRemoteIOAudioPlayer::startRioAudioPlayer() {
 	}
 }
 
-void NLRemoteIOAudioPlayer::startRioAudioPlayerWithInputURL(CFURLRef path) {
+void NLRemoteIOAudioPlayer::startRioAudioPlayerWithInputURL(const CFURLRef &path) {
 	
     if (playing == YES) {
         stopRioAudioPlayer();
@@ -700,7 +700,7 @@ void NLRemoteIOAudioPlayer::stopRioAudioPlayer() {
 
 // You can use this method during development and debugging to look at the
 //    fields of an AudioStreamBasicDescription struct.
-void NLRemoteIOAudioPlayer::printASBD(AudioStreamBasicDescription asbd) {
+void NLRemoteIOAudioPlayer::printASBD(const AudioStreamBasicDescription &asbd) {
     
     char formatIDString[5];
     UInt32 formatID = CFSwapInt32HostToBig (asbd.mFormatID);
@@ -718,7 +718,7 @@ void NLRemoteIOAudioPlayer::printASBD(AudioStreamBasicDescription asbd) {
 }
 
 
-void NLRemoteIOAudioPlayer::printErrorMessageWithStatus(const char* errorString, OSStatus result) {
+void NLRemoteIOAudioPlayer::printErrorMessageWithStatus(const char* errorString, const OSStatus &result) {
     
 	printf("ERROR: %s with status %i \n",errorString,static_cast<int>(result));
 }
@@ -781,7 +781,7 @@ NLRemoteIOAudioPlayer::~NLRemoteIOAudioPlayer() {
 #pragma mark -
 #pragma mark Ring Buffer Processing
 
-void NLRemoteIOAudioPlayer::allocRingBufferAtPosition(SInt64 seekPosition) {
+void NLRemoteIOAudioPlayer::allocRingBufferAtPosition(const SInt64 &seekPosition) {
 	
 	soundStructUnit.requestNextBuffer = 0;
 	
@@ -975,7 +975,7 @@ void NLRemoteIOAudioPlayer::playRingBufferAudio() {
 #pragma mark Seek methods
 
 // !!!: this function, when called by a UIKit slider, is handling input asynchronously. Expect at least three asynchronous calls for the smallest movements
-void NLRemoteIOAudioPlayer::seekToPosition(float seekTime) {
+void NLRemoteIOAudioPlayer::seekToPosition(const float &seekTime) {
 	
     dispatch_sync(scrollQueue, ^{    
         
@@ -1044,7 +1044,7 @@ float NLRemoteIOAudioPlayer::getFileDurationInSeconds() {
 	return fileDuration.value/framesBuffered.timescale;
 }
 
-SInt64 NLRemoteIOAudioPlayer::convertSecondsToRemoteIOSamples(float seconds) {
+SInt64 NLRemoteIOAudioPlayer::convertSecondsToRemoteIOSamples(const float &seconds) {
 	
 	// Translates seconds -> frames in a given file for seeking forward or back in fixed durations based on time.
 	// Equation should be based on sample rate... 44100 samples for every second. Consider a single frame to be a sample in this case.
@@ -1055,7 +1055,7 @@ SInt64 NLRemoteIOAudioPlayer::convertSecondsToRemoteIOSamples(float seconds) {
 	//printf("Converting %f seconds to the corresponding representation in frames \n", seconds);
 }
 
-void NLRemoteIOAudioPlayer::setFramesBufferedAtSamplePosition(SInt64 position) {
+void NLRemoteIOAudioPlayer::setFramesBufferedAtSamplePosition(const SInt64 &position) {
 	
 	framesBuffered.value = position;
     
@@ -1065,7 +1065,7 @@ void NLRemoteIOAudioPlayer::setFramesBufferedAtSamplePosition(SInt64 position) {
 	
 }
 
-void NLRemoteIOAudioPlayer::incrementFramesElapsed(UInt32 numSamples)	{
+void NLRemoteIOAudioPlayer::incrementFramesElapsed(const UInt32 &numSamples)	{
 	
 	framesBuffered.value += numSamples;
 	framesRemainingInFile -= numSamples;
